@@ -44,7 +44,8 @@ class RecipeTableViewController: UITableViewController, RecipeViewModelDelegate 
         tableView.estimatedRowHeight = 44
         tableView.tableFooterView = UIView(frame: CGRect.zero)
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "RecipeTableViewCell")
+//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "RecipeTableViewCell")
+        tableView.register(UINib(nibName: "RecipeTableViewCell" , bundle: nil), forCellReuseIdentifier: "RecipeTableViewCell")
 
     }
     
@@ -88,16 +89,22 @@ class RecipeTableViewController: UITableViewController, RecipeViewModelDelegate 
             print("ERROR: RecipeTableViewController recipeViewModel invalid")
             return UITableViewCell()
         }
-        
+        var recipeTableViewCell = RecipeTableViewCell()
+
         if let data = recipeViewModel.cellDataForRowAtIndexPath(indexPath) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTableViewCell", for: indexPath)
-            var config = cell.defaultContentConfiguration()
-            config.text = data.name
-            config.textProperties.font = UIFont.systemFont(ofSize: 14)
-            config.secondaryText = data.cuisine
-            config.secondaryTextProperties.font = UIFont.systemFont(ofSize: 12)
-            cell.contentConfiguration = config
-            return cell
+            
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTableViewCell", for: indexPath) as? RecipeTableViewCell {
+                recipeTableViewCell = cell
+//                var config = cell.defaultContentConfiguration()
+//                config.text = data.name
+//                config.textProperties.font = UIFont.preferredFont(forTextStyle: .body)
+//                config.secondaryText = data.cuisine
+//                config.secondaryTextProperties.font = UIFont.preferredFont(forTextStyle: .subheadline)
+//                config.secondaryTextProperties.color = UIColor.backgroundColor
+//                cell.contentConfiguration = config
+                recipeTableViewCell.setRecipeData(data)
+            }
+            return recipeTableViewCell
             
         } else {
             return UITableViewCell()

@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.backgroundColor = UIColor(red: 42.0/255.0, green: 114.0/255.0, blue: 185.0/255.0, alpha: 1.0)
+        navBarAppearance.backgroundColor = UIColor.backgroundColor
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byTruncatingMiddle
