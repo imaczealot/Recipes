@@ -8,11 +8,16 @@
 import Foundation
 import os
 
+
 public enum NetworkError: Error {
     case GeneralError
-    case NotSupported
-    case networkFailure(Error)
 }
+
+protocol RecipeViewModelDelegate: ActivityViewType {
+    
+    func didUpdate(success: Bool, errorinfo: EmptyViewData?)
+}
+
 
 
 class RecipeViewModel {
@@ -33,13 +38,32 @@ class RecipeViewModel {
     }
     
 
-    func fetchRecipeData(_ refresh:Bool) {
+    fileprivate func processingResponse(_ data: Data, _ errorInfo: EmptyViewData) {
+        let title = NSLocalizedString("Could not load recipes", comment: "Could not load recipes")
+        let description = NSLocalizedString("Unable to read data from server", comment: "Unable to read data from server")
+        let buttonText = NSLocalizedString("Try Again", comment: "Try Again")
+        let errorInfo = EmptyViewData(title: title, description: description, buttonText: buttonText, action: { () in
+            self.fetchRecipeData(true)})
+
+        do {
+            let recipeData:Recipes = try JSONDecoder().decode(Recipes.self, from: data)
+            os_log(.info, log: self.log, "processingResponse: decode success")
+            self.recipeList.append(contentsOf: recipeData.recipes)
+            self.pendingFetch = false
+            self.delegate?.didUpdate(success: true, errorinfo: nil)
+        } catch {
+            os_log(.error, log: self.log, "processingResponse: decode error: \(error.localizedDescription)")
+            self.pendingFetch = false
+            self.delegate?.didUpdate(success: false, errorinfo: errorInfo)
+        }
+    }
+    
+    func fetchRecipeData(_ refresh: Bool) {
         if pendingFetch == true {
             return
         }
         pendingFetch = true
         
-        // When the tableview performs a refresh we want to clear out all data
         if !refresh {
             // Show progess spinner unless the refresh spinner is being displayed.
             delegate?.showActivityIndicator()
@@ -52,10 +76,14 @@ class RecipeViewModel {
             
             var request = URLRequest(url: url)
             request.httpMethod = "GET"
-            request.timeoutInterval = 2
             request.allHTTPHeaderFields = [
                 "Content-Type": "application/json"
             ]
+            
+            let title = NSLocalizedString("Could not load recipes", comment: "Could not load recipes")
+            let buttonText = NSLocalizedString("Try Again", comment: "Try Again")
+            let errorInfo = EmptyViewData(title: title, buttonText: buttonText, action: { () in
+                self.fetchRecipeData(refresh)})
             
             do {
                 let (data, response) = try await URLSession.shared.data(for: request)
@@ -63,27 +91,21 @@ class RecipeViewModel {
                 if httpResponse.statusCode == 200 {
                     // TODO: move to a processing data func
                     if refresh == true {
+                        // When the tableview performs a refresh we want to clear out all data
                         // Clear existing data only if we get a response.
                         self.recipeList.removeAll()
                     }
-
-                    let recipeData:Recipes = try JSONDecoder().decode(Recipes.self, from: data)
-                    print(recipeData)
-                    //                    os_log(.info, log: self.log, "fetchRecipeData: decode success \(recipeData)")
-                    os_log(.info, log: self.log, "fetchRecipeData: decode success")
-                    self.recipeList.append(contentsOf: recipeData.recipes)
-                    self.pendingFetch = false
-                    self.delegate?.didUpdate(success: true)
-                    
+                    processingResponse(data, errorInfo)
                 } else {
+                    // throw to outer catch block
                     throw NetworkError.GeneralError
                 }
             } catch let error {
-                os_log(.info, log: self.log, "fetchRecipeData: HTTP Request Failed \(error.localizedDescription)")
+                os_log(.error, log: self.log, "fetchRecipeData: HTTP Request Failed \(error.localizedDescription)")
                 self.delegate?.hideActivityIndicator()
-                print("Error: getAlertsReceivedAPI: error: \(error)")
+                print("Error: fetchRecipeData: error: \(error)")
                 self.pendingFetch = false
-                self.delegate?.didUpdate(success: false)
+                self.delegate?.didUpdate(success: false, errorinfo: errorInfo)
                 throw error
             }
         }
@@ -93,7 +115,6 @@ class RecipeViewModel {
         if pendingFetch == true {
             return 0
         } else {
-            //TODO: handle error case where pendingFetch has completed but there is no data
             return recipeList.count
         }
     }
@@ -104,7 +125,7 @@ class RecipeViewModel {
             return recipeList[row]
         }
         else {
-            print("Error: AlertSentSummaryModel index out of bounds: \(indexPath)")
+            os_log(.error, log: self.log, "Error: cellDataForRowAtIndexPath index out of bounds: \(indexPath)")
             return nil
         }
     }
@@ -116,7 +137,7 @@ extension RecipeViewModel: EmptyViewDelegate {
     func emptyViewData() -> EmptyViewData? {
         let title = NSLocalizedString("No Recipes Available", comment: "No Recipes Found Title")
         let description = NSLocalizedString("An error has occurred retreiving recipes.", comment: "An error has occurred retreiving recipes.")
-        let data = EmptyViewData()
+        var data = EmptyViewData()
         data.title = title
         data.description = description
         return data

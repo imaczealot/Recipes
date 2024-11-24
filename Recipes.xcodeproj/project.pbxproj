@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		73BD02482CF230BE00A1DBE8 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 73BD02472CF230BE00A1DBE8 /* SVProgressHUD */; };
 		73BD024C2CF23F2800A1DBE8 /* DZNEmptyDataSet in Frameworks */ = {isa = PBXBuildFile; productRef = 73BD024B2CF23F2800A1DBE8 /* DZNEmptyDataSet */; };
+		73BD028B2CF2812A00A1DBE8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 73BD028A2CF2812A00A1DBE8 /* Kingfisher */; };
+		73BD02932CF3621600A1DBE8 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 73BD02922CF3621600A1DBE8 /* SVProgressHUD */; };
+		73BD02952CF3621B00A1DBE8 /* DZNEmptyDataSet in Frameworks */ = {isa = PBXBuildFile; productRef = 73BD02942CF3621B00A1DBE8 /* DZNEmptyDataSet */; };
+		73BD02972CF3626700A1DBE8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 73BD02962CF3626700A1DBE8 /* Kingfisher */; };
+		73BD029D2CF3663900A1DBE8 /* OHHTTPStubs in Frameworks */ = {isa = PBXBuildFile; productRef = 73BD029C2CF3663900A1DBE8 /* OHHTTPStubs */; };
+		73BD029F2CF3663900A1DBE8 /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 73BD029E2CF3663900A1DBE8 /* OHHTTPStubsSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73BD028B2CF2812A00A1DBE8 /* Kingfisher in Frameworks */,
 				73BD024C2CF23F2800A1DBE8 /* DZNEmptyDataSet in Frameworks */,
 				73BD02482CF230BE00A1DBE8 /* SVProgressHUD in Frameworks */,
 			);
@@ -79,6 +86,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73BD02972CF3626700A1DBE8 /* Kingfisher in Frameworks */,
+				73BD02952CF3621B00A1DBE8 /* DZNEmptyDataSet in Frameworks */,
+				73BD02932CF3621600A1DBE8 /* SVProgressHUD in Frameworks */,
+				73BD029F2CF3663900A1DBE8 /* OHHTTPStubsSwift in Frameworks */,
+				73BD029D2CF3663900A1DBE8 /* OHHTTPStubs in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,6 +154,7 @@
 			packageProductDependencies = (
 				73BD02472CF230BE00A1DBE8 /* SVProgressHUD */,
 				73BD024B2CF23F2800A1DBE8 /* DZNEmptyDataSet */,
+				73BD028A2CF2812A00A1DBE8 /* Kingfisher */,
 			);
 			productName = Recipes;
 			productReference = 73BD01E42CF20A7400A1DBE8 /* Recipes.app */;
@@ -165,6 +178,11 @@
 			);
 			name = RecipesTests;
 			packageProductDependencies = (
+				73BD02922CF3621600A1DBE8 /* SVProgressHUD */,
+				73BD02942CF3621B00A1DBE8 /* DZNEmptyDataSet */,
+				73BD02962CF3626700A1DBE8 /* Kingfisher */,
+				73BD029C2CF3663900A1DBE8 /* OHHTTPStubs */,
+				73BD029E2CF3663900A1DBE8 /* OHHTTPStubsSwift */,
 			);
 			productName = RecipesTests;
 			productReference = 73BD01FD2CF20A7500A1DBE8 /* RecipesTests.xctest */;
@@ -228,6 +246,8 @@
 			packageReferences = (
 				73BD02432CF22EAC00A1DBE8 /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
 				73BD024A2CF23F1D00A1DBE8 /* XCRemoteSwiftPackageReference "DZNEmptyDataSet" */,
+				73BD02892CF2812A00A1DBE8 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				73BD029B2CF3663900A1DBE8 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 73BD01E52CF20A7400A1DBE8 /* Products */;
@@ -318,6 +338,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -346,6 +367,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -608,6 +630,22 @@
 				kind = branch;
 			};
 		};
+		73BD02892CF2812A00A1DBE8 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		73BD029B2CF3663900A1DBE8 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AliSoftware/OHHTTPStubs.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -620,6 +658,36 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 73BD024A2CF23F1D00A1DBE8 /* XCRemoteSwiftPackageReference "DZNEmptyDataSet" */;
 			productName = DZNEmptyDataSet;
+		};
+		73BD028A2CF2812A00A1DBE8 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 73BD02892CF2812A00A1DBE8 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		73BD02922CF3621600A1DBE8 /* SVProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 73BD02432CF22EAC00A1DBE8 /* XCRemoteSwiftPackageReference "SVProgressHUD" */;
+			productName = SVProgressHUD;
+		};
+		73BD02942CF3621B00A1DBE8 /* DZNEmptyDataSet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 73BD024A2CF23F1D00A1DBE8 /* XCRemoteSwiftPackageReference "DZNEmptyDataSet" */;
+			productName = DZNEmptyDataSet;
+		};
+		73BD02962CF3626700A1DBE8 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 73BD02892CF2812A00A1DBE8 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		73BD029C2CF3663900A1DBE8 /* OHHTTPStubs */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 73BD029B2CF3663900A1DBE8 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			productName = OHHTTPStubs;
+		};
+		73BD029E2CF3663900A1DBE8 /* OHHTTPStubsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 73BD029B2CF3663900A1DBE8 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			productName = OHHTTPStubsSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

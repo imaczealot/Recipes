@@ -10,10 +10,6 @@ import DZNEmptyDataSet
 import os
 
 
-protocol RecipeViewModelDelegate: ActivityViewType {
-    
-    func didUpdate(success: Bool)
-}
 
 class RecipeTableViewController: UITableViewController, RecipeViewModelDelegate {
     
@@ -41,10 +37,8 @@ class RecipeTableViewController: UITableViewController, RecipeViewModelDelegate 
         tableView.emptyDataSetSource = emptyViewDataSet
         tableView.emptyDataSetDelegate = emptyViewDataSet
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 44
+        tableView.estimatedRowHeight = 64
         tableView.tableFooterView = UIView(frame: CGRect.zero)
-        
-//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "RecipeTableViewCell")
         tableView.register(UINib(nibName: "RecipeTableViewCell" , bundle: nil), forCellReuseIdentifier: "RecipeTableViewCell")
 
     }
@@ -53,23 +47,19 @@ class RecipeTableViewController: UITableViewController, RecipeViewModelDelegate 
         self.recipeViewModel?.refreshRecipeData(true)
     }
     
-    func handleRefresh(_ sender: AnyObject?) {
-        self.recipeViewModel?.refreshRecipeData(false)
-    }
     
     // MARK: RecipeViewModelDelegate
-    func didUpdate(success: Bool) {
-        os_log(.info, log: self.log, "didUpdate: ")
-        self.hideActivityIndicator()
-        if success {
-            Task { @MainActor in
-                tableView.reloadData()
-                if let refreshControl = self.refreshControl, refreshControl.isRefreshing {
-                    refreshControl.endRefreshing()
-                }
+    func didUpdate(success: Bool, errorinfo: EmptyViewData?) {
+        os_log(.debug, log: self.log, "didUpdate: ")
+        Task { @MainActor in
+            self.hideActivityIndicator()
+            if !success, let errorinfo = errorinfo {
+                emptyViewDataSet.errorData = errorinfo
             }
-        } else {
-            // show alert
+            tableView.reloadData()
+            if let refreshControl = self.refreshControl, refreshControl.isRefreshing {
+                refreshControl.endRefreshing()
+            }
         }
     }
 
@@ -86,7 +76,7 @@ class RecipeTableViewController: UITableViewController, RecipeViewModelDelegate 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
                 
         guard let recipeViewModel = self.recipeViewModel else {
-            print("ERROR: RecipeTableViewController recipeViewModel invalid")
+            os_log(.error, log: self.log, "ERROR: RecipeTableViewController recipeViewModel invalid")
             return UITableViewCell()
         }
         var recipeTableViewCell = RecipeTableViewCell()
@@ -95,13 +85,6 @@ class RecipeTableViewController: UITableViewController, RecipeViewModelDelegate 
             
             if let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTableViewCell", for: indexPath) as? RecipeTableViewCell {
                 recipeTableViewCell = cell
-//                var config = cell.defaultContentConfiguration()
-//                config.text = data.name
-//                config.textProperties.font = UIFont.preferredFont(forTextStyle: .body)
-//                config.secondaryText = data.cuisine
-//                config.secondaryTextProperties.font = UIFont.preferredFont(forTextStyle: .subheadline)
-//                config.secondaryTextProperties.color = UIColor.backgroundColor
-//                cell.contentConfiguration = config
                 recipeTableViewCell.setRecipeData(data)
             }
             return recipeTableViewCell

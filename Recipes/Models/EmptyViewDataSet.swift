@@ -8,15 +8,15 @@
 import Foundation
 import DZNEmptyDataSet
 
-class EmptyViewData {
-    
-    init() {
-    
-    }
-    
+typealias EmptyViewDataActionBlock = () -> Void
+
+struct EmptyViewData {
+     
     var title: String?
     var description: String?
-    
+    var buttonText: String?
+    var action: EmptyViewDataActionBlock?
+
 }
 
 protocol EmptyViewDelegate: AnyObject {
@@ -55,19 +55,14 @@ class EmptyViewDataSet: NSObject, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
         return delegate?.shouldShowEmptyView() ?? false
     }
     
-//    @objc func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage? {
-//        guard let image = currentEmptyViewData()?.image else { return nil }
-//        return image
-//    }
        
     @objc func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         var attributedValue: NSAttributedString?
         if let value = currentEmptyViewData()?.title {
             let attribs = [
-                NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .headline),
+                NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .largeTitle),
                 NSAttributedString.Key.foregroundColor: UIColor.darkGray
             ]
-            
             attributedValue = NSAttributedString(string: value, attributes: attribs)
         }
         return attributedValue
@@ -85,25 +80,22 @@ class EmptyViewDataSet: NSObject, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
                 NSAttributedString.Key.foregroundColor: UIColor.lightGray,
                 NSAttributedString.Key.paragraphStyle: para
             ]
-            
             attributedValue = NSAttributedString(string: value, attributes: attribs)
         }
         return attributedValue
     }
     
-//    @objc func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControl.State) -> NSAttributedString? {
-//        var attributedValue: NSAttributedString?
-//        if let value = currentEmptyViewData()?.buttonText {
-//            let backgroundColor = ASThemeManager.sharedInstance.backgroundColor
-//            let color = state == UIControl.State.normal ? backgroundColor : backgroundColor.withAlphaComponent(0.5)
-//            attributedValue = NSAttributedString(string: value , attributes:[NSAttributedString.Key.foregroundColor:color])
-//        
-//        }
-//        return attributedValue
-//    }
+    @objc func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> NSAttributedString? {
+        var attributedValue: NSAttributedString?
+        if let value = currentEmptyViewData()?.buttonText {
+            let color = state == UIControl.State.normal ? UIColor.backgroundColor : UIColor.backgroundColor.withAlphaComponent(0.5)
+            attributedValue = NSAttributedString(string: value , attributes:[NSAttributedString.Key.foregroundColor:color])
+        }
+        return attributedValue
+    }
     
     @objc func emptyDataSet(_ scrollView: UIScrollView, didTap button: UIButton) {
-//        currentEmptyViewData()?.action?()
+        currentEmptyViewData()?.action?()
         errorData = nil
     }
 
